@@ -42,3 +42,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Hide API credentials
+/lib/constants/credentials.dart
+
