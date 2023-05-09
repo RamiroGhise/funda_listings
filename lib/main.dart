@@ -1,13 +1,10 @@
-import 'dart:convert';
-
-import 'package:current_location/current_location.dart';
 import 'package:flutter/material.dart';
-import 'package:funda_listings/services/listing/listing.dart';
+import 'package:funda_listings/services/listing/listing_exceptions.dart';
+import 'package:funda_listings/utilities/show_error_dialog.dart';
 import 'package:funda_listings/views/listing_view.dart';
-import 'package:http/http.dart' as http;
+import 'package:funda_listings/services/listing/listing_service.dart';
 import 'dart:developer' as devtools show log;
 
-import 'constants/credentials.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,13 +20,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  ListingService listingService = ListingService();
 
   @override
   Widget build(BuildContext context) {
@@ -37,30 +36,26 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Homepage'),
       ),
-      body: TextButton(
-        onPressed: () async {
-          final listing = await getListing();
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ListingView(listing: listing),
-            ),
-          );
-        },
-        child: const Text('get listing'),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            const listingId = '9134f731-c348-4df2-b330-ab360a471b779';
+            try {
+              final listing = await listingService.getListing(listingId);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ListingView(listing: listing),
+                ),
+              );
+            } on BadRequestListingException catch(e) {
+              showErrorDialog(context, e.text);
+            } catch (e) {
+              showErrorDialog(context, e.toString());
+            }
+          },
+          child: const Text('Get listing'),
+        ),
       ),
     );
   }
-}
-
-Future<Listing> getListing() async {
-  final currentLocation = CurrentLocation();
-  final coordinates = await currentLocation.getCoordinates();
-  const listingId = '9134f731-c348-4df2-b330-ab360a471b77';
-  final url = Uri.parse(
-      'http://partnerapi.funda.nl/feeds/Aanbod.svc/json/detail/$key/koop/$listingId/');
-  final response = await http.get(url);
-  final Listing listing = Listing.fromJson(jsonDecode(response.body));
-  // devtools.log("listing: $listing");
-
-  return listing;
 }
