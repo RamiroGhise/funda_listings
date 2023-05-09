@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Widget used to control the number of lines to be displayed in a [Text]
+/// widget. [ExpandableText] displays the [maxLines] when it is initially
+/// rendered. By tapping this widget, the full [text] is displayed.
 class ExpandableText extends StatefulWidget {
   final String text;
   final int maxLines;

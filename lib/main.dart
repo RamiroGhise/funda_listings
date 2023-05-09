@@ -3,7 +3,6 @@ import 'package:funda_listings/services/listing/listing_exceptions.dart';
 import 'package:funda_listings/utilities/show_error_dialog.dart';
 import 'package:funda_listings/views/listing_view.dart';
 import 'package:funda_listings/services/listing/listing_service.dart';
-import 'dart:developer' as devtools show log;
 
 
 void main() {
@@ -27,19 +26,21 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-
+  // instantiate the ListingService
   ListingService listingService = ListingService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Homepage'),
+        title: const Text('Listings'),
       ),
       body: Center(
         child: ElevatedButton(
+          // get information about a listing when pressing the button.
+          // todo use a ListView.builder to choose from a List<Listing>
           onPressed: () async {
-            const listingId = '9134f731-c348-4df2-b330-ab360a471b779';
+            const listingId = '9134f731-c348-4df2-b330-ab360a471b77';
             try {
               final listing = await listingService.getListing(listingId);
               Navigator.of(context).push(

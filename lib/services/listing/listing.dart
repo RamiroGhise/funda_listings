@@ -1,5 +1,7 @@
 import 'package:funda_listings/services/listing/constants/listing_field_names.dart';
 
+/// The model of a Listing.
+/// Contains information about an estate.
 class Listing {
   final String id;
   final String address;
@@ -28,6 +30,11 @@ class Listing {
     required this.media,
   });
 
+  /// Filter [Media] and extract a list of URLs used to display
+  /// images related to a [Listing].
+  ///
+  /// For each [Media] with category of 1, get the first 'larger'
+  /// (i.e. 'grotere') image (media item category 7).
   List<String> get mediaUrls {
     List<String> urls =
         media.where((media) => media.category == 1).map((media) {
@@ -38,6 +45,7 @@ class Listing {
     return urls;
   }
 
+  /// Named constructor to create a [Listing] from a JSON object.
   Listing.fromJson(Map<String, dynamic> json)
       : id = json[listingIdFieldName],
         address = json[addressFieldName],
@@ -49,10 +57,13 @@ class Listing {
         lotArea = json[lotAreaFieldName],
         fullDescription = json[fullDescriptionFieldName],
         url = json[urlFieldName],
+        // to create a List<Media>, use Media.fromJson constructor from [Media]
+        // for each element
         media = (json[mediaFieldName] as List)
             .map((media) => Media.fromJson(media))
             .toList();
 
+  // override the toString() method to customize logging
   @override
   String toString() {
     return 'Listing, id: $id, address: $address, location: $location, postalCode: $postalCode, numberOfRooms: $numberOfRooms, '
@@ -60,6 +71,8 @@ class Listing {
   }
 }
 
+/// The model of a Media.
+/// Contains information about a Media.
 class Media {
   final String id;
   final int category;
@@ -73,6 +86,7 @@ class Media {
     required this.mediaItems,
   });
 
+  // Named constructor to create a [Media] from a JSON.
   Media.fromJson(Map<String, dynamic> json)
       : id = json[mediaIdFieldName],
         category = json[mediaCategoryFieldName],
@@ -87,6 +101,9 @@ class Media {
   }
 }
 
+
+/// The model of a MediaItem.
+/// Contains information about a MediaItem.
 class MediaItem {
   final int category;
   final String url;

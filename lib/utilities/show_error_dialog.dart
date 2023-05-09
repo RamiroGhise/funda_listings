@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Displays an [AlertDialog] on the screen.
+///
+/// Takes as parameter the [BuildContext] and a [String] to be displayed as the
+/// content of the [AlertDialog].
+/// Used to display errors to the user.
 Future<void> showErrorDialog(BuildContext context, String text) {
   return showDialog(
     context: context,
