@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:current_location/current_location.dart';
 import 'package:flutter/material.dart';
 import 'package:funda_listings/services/listing/listing.dart';
 import 'package:funda_listings/views/listing_view.dart';
@@ -52,12 +53,14 @@ class HomePage extends StatelessWidget {
 }
 
 Future<Listing> getListing() async {
+  final currentLocation = CurrentLocation();
+  final coordinates = await currentLocation.getCoordinates();
   const listingId = '9134f731-c348-4df2-b330-ab360a471b77';
   final url = Uri.parse(
       'http://partnerapi.funda.nl/feeds/Aanbod.svc/json/detail/$key/koop/$listingId/');
   final response = await http.get(url);
   final Listing listing = Listing.fromJson(jsonDecode(response.body));
-  devtools.log("listing: $listing");
+  // devtools.log("listing: $listing");
 
   return listing;
 }

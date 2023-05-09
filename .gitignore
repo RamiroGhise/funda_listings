@@ -45,4 +45,5 @@ app.*.map.json
 
 # Hide API credentials
 /lib/constants/credentials.dart
+/android/app/src/main/AndroidManifest.xml
 

@@ -3,6 +3,8 @@ import 'package:funda_listings/services/listing/constants/listing_field_names.da
 class Listing {
   final String id;
   final String address;
+  final String location;
+  final String postalCode;
   final int numberOfRooms;
   final int price;
 
@@ -15,6 +17,8 @@ class Listing {
   Listing({
     required this.id,
     required this.address,
+    required this.location,
+    required this.postalCode,
     required this.numberOfRooms,
     required this.price,
     // required this.livingArea,
@@ -24,9 +28,21 @@ class Listing {
     required this.media,
   });
 
+  List<String> get mediaUrls {
+    List<String> urls =
+        media.where((media) => media.category == 1).map((media) {
+      MediaItem mediaItem =
+          media.mediaItems.firstWhere((element) => element.category == 7);
+      return mediaItem.url;
+    }).toList();
+    return urls;
+  }
+
   Listing.fromJson(Map<String, dynamic> json)
       : id = json[listingIdFieldName],
         address = json[addressFieldName],
+        location = json[locationFieldName],
+        postalCode = json[postalCodeFieldName],
         numberOfRooms = json[numberOfRoomsFieldName] as int,
         price = json[purchasePriceFieldName],
         // livingArea = json[livingAreaFieldName],
@@ -39,7 +55,7 @@ class Listing {
 
   @override
   String toString() {
-    return 'Listing, id: $id, address: $address, numberOfRooms: $numberOfRooms, '
+    return 'Listing, id: $id, address: $address, location: $location, postalCode: $postalCode, numberOfRooms: $numberOfRooms, '
         'price: $price, lotArea: $lotArea, url: $url, media: $media';
   }
 }

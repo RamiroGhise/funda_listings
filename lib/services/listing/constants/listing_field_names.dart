@@ -1,6 +1,8 @@
 /// field names for Listing
 const listingIdFieldName = 'InternalId';
 const addressFieldName = 'Adres';
+const locationFieldName = 'Plaats';
+const postalCodeFieldName = 'Postcode';
 const numberOfRoomsFieldName = 'AantalKamers';
 const purchasePriceFieldName = 'KoopPrijs';
 // const livingAreaFieldName = '';
